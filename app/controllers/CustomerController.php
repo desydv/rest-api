@@ -80,6 +80,16 @@ final class CustomerController{
     }
     
     public function changePassword(Request $request, Response $response, $args){
+        $validation = Validator::validate($request, [
+            'old-password' => v::noWhiteSpace()->notEmpty(),
+            'new-password' => v::noWhiteSpace()->notEmpty(),
+        ]);
+
+        if (!empty($validation)){
+            return $response->withJson(["status" => "failed", "error" => $validation], 400);   
+        }
+
+
         $input = $request->getParsedBody();
 
         $customer = Customer::find($args['id']);
