@@ -53,5 +53,22 @@ final class CustomerController{
           return $response->withJson(["status" => "failed", "data" => $customer], 200);
         }
     }
+    
+    public function changePassword(Request $request, Response $response, $args){
+        $input = $request->getParsedBody();
+
+        $customer = Customer::find($args['id']);
+        if($customer->password != $input['old-password']){
+            return $response->withJson(["status" => "failed"], 403);
+        }
+        $customer->password = $input['new-password'];
+        $customer->save();
+       
+        if($customer){
+            return $response->withJson(["status" => "success"], 200);
+        }else{
+            return $response->withJson(["status" => "failed"], 200);
+        }
+    }
 
 }
