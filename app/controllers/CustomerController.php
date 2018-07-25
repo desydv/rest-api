@@ -4,8 +4,21 @@ namespace app\controllers;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use app\models\Customer;
+use Respect\Validation\Validator as v;
+use app\validation\Validator as validator;
 
 final class CustomerController{
+
+    private function customerValidation ($request){
+        $validation = Validator::validate($request, [
+            'email' => v::noWhiteSpace()->notEmpty()->emailAvailable(),
+            'name' => v::notEmpty(),
+            'password' => v::noWhiteSpace()->notEmpty(),
+            'phone' => v::noWhiteSpace()->notEmpty()->phoneAvailable(),
+        ]);
+
+        return $validation;
+    }
 
     public function getCustomers(Request $request, Response $response, $args)
     {
@@ -19,16 +32,28 @@ final class CustomerController{
     }
 
     public function createCustomer(Request $request, Response $response, $args){
+        $validation = $this->customerValidation($request);
+        
+        if (!empty($validation)){
+          return $response->withJson(["status" => "failed", "error" => $validation], 400);   
+        } 
+
         $input = $request->getParsedBody();
         $customer = Customer::create($input);
           if($customer){
             return $response->withJson(["status" => "success", "data" => $customer], 200);
           }else{
-            return $response->withJson(["status" => "failed", "data" => $customer], 200);
+            return $response->withJson(["status" => "failed", "error" => $customer], 200);
           }
     }
 
     public function updateCustomer(Request $request, Response $response, $args){
+        $validation = $this->customerValidation($request);
+
+        if (!empty($validation)){
+            return $response->withJson(["status" => "failed", "error" => $validation], 400);   
+        }
+
         $input = $request->getParsedBody();
 
         $customer = Customer::find($args['id']);
@@ -41,7 +66,7 @@ final class CustomerController{
         if($customer){
             return $response->withJson(["status" => "success", "data" => $customer], 200);
         }else{
-            return $response->withJson(["status" => "failed", "data" => $customer], 200);
+            return $response->withJson(["status" => "failed", "error" => $customer], 200);
         }
     }
 

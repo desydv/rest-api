@@ -4,6 +4,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 use app\models\Customer;
 use app\controllers\CustomerController;
 use app\controllers\ApiController;
+use Respect\Validation\Validator as v;
 require '../vendor/autoload.php';
 
 $dotenv = new Dotenv\Dotenv(__DIR__ . '/..');
@@ -12,6 +13,7 @@ $dotenv->load();
 $settings = require __DIR__ . '/../src/settings.php';
 $app = new \Slim\App($settings);
 require __DIR__ . '/../src/dependencies.php';
+v::with('app\\validation\\rules\\');
 
 $app->get('/', ApiController::class.':hello');
 
