@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Controllers;
+namespace app\controllers;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
-use App\Models\Customer;
+use app\models\Customer;
 
 final class CustomerController{
 

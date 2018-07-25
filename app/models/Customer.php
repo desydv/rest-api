@@ -1,5 +1,5 @@
 <?php 
-namespace App\Models;
+namespace app\models;
 use \Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model {  
