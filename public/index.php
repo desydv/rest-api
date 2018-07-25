@@ -25,4 +25,6 @@ $app->put('/customer/[{id}]', CustomerController::class.':updateCustomer');
 
 $app->delete('/customer/[{id}]', CustomerController::class.':deleteCustomer');
 
+$app->put('/change-password/[{id}]', CustomerController::class.':changePassword');
+
 $app->run();
