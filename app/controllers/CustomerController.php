@@ -11,10 +11,10 @@ final class CustomerController{
 
     private function customerValidation ($request){
         $validation = Validator::validate($request, [
-            'email' => v::noWhiteSpace()->notEmpty()->emailAvailable(),
+            'email' => v::notEmpty()->emailAvailable(),
             'name' => v::notEmpty(),
-            'password' => v::noWhiteSpace()->notEmpty(),
-            'phone' => v::noWhiteSpace()->notEmpty()->phoneAvailable(),
+            'password' => v::notEmpty(),
+            'phone' => v::notEmpty()->phoneAvailable(),
         ]);
 
         return $validation;
@@ -81,8 +81,8 @@ final class CustomerController{
     
     public function changePassword(Request $request, Response $response, $args){
         $validation = Validator::validate($request, [
-            'old-password' => v::noWhiteSpace()->notEmpty(),
-            'new-password' => v::noWhiteSpace()->notEmpty(),
+            'old-password' => v::notEmpty(),
+            'new-password' => v::notEmpty(),
         ]);
 
         if (!empty($validation)){
