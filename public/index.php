@@ -13,18 +13,18 @@ $settings = require __DIR__ . '/../src/settings.php';
 $app = new \Slim\App($settings);
 require __DIR__ . '/../src/dependencies.php';
 
-$app->get('/', ApiController::class.':hello');
+$app->get('/', 'ApiController:hello');
 
-$app->get('/customers', CustomerController::class.':getCustomers');
+$app->get('/customers', 'CustomerController:getCustomers');
 
-$app->get('/customer/[{id}]', CustomerController::class.':getSpecificCustomer');
+$app->get('/customer/[{id}]', 'CustomerController:getSpecificCustomer');
 
-$app->post('/customer', CustomerController::class.':createCustomer');
+$app->post('/customer', 'CustomerController:createCustomer');
 
-$app->put('/customer/[{id}]', CustomerController::class.':updateCustomer');
+$app->put('/customer/[{id}]', 'CustomerController:updateCustomer');
 
-$app->delete('/customer/[{id}]', CustomerController::class.':deleteCustomer');
+$app->delete('/customer/[{id}]', 'CustomerController:deleteCustomer');
 
-$app->put('/change-password/[{id}]', CustomerController::class.':changePassword');
+$app->put('/change-password/[{id}]', 'CustomerController:changePassword');
 
 $app->run();

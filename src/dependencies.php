@@ -17,3 +17,11 @@ $capsule->bootEloquent();
 $container['db'] = function ($container) use ($capsule) {
     return $capsule;
 };
+
+$container['ApiController'] = function($container) {
+    return new App\controllers\ApiController;
+};
+
+$container['CustomerController'] = function($container) {
+    return new App\controllers\CustomerController;
+};
