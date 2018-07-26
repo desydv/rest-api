@@ -15,9 +15,19 @@ $app = new \Slim\App($settings);
 require __DIR__ . '/../src/dependencies.php';
 v::with('app\\validation\\rules\\');
 
+$app->add(function ($req, $res, $next) {
+    $response = $next($req, $res);
+    return $response
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Pragma, Origin, Authorization')
+            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS, HEAD');
+});
+
 $app->get('/', ApiController::class.':hello');
 
 $app->get('/customers', CustomerController::class.':getCustomers');
+
+$app->post('/login', CustomerController::class.':login');
 
 $app->get('/customer/[{id}]', CustomerController::class.':getSpecificCustomer');
 

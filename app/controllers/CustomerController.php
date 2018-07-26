@@ -48,7 +48,12 @@ final class CustomerController{
     }
 
     public function updateCustomer(Request $request, Response $response, $args){
-        $validation = $this->customerValidation($request);
+        $validation = Validator::validate($request, [
+            'email' => v::notEmpty(),
+            'name' => v::notEmpty(),
+            'password' => v::notEmpty(),
+            'phone' => v::notEmpty(),
+        ]);
 
         if (!empty($validation)){
             return $response->withJson(["status" => "failed", "error" => $validation], 400);   
@@ -103,6 +108,27 @@ final class CustomerController{
             return $response->withJson(["status" => "success"], 200);
         }else{
             return $response->withJson(["status" => "failed"], 200);
+        }
+    }
+
+    public function login(Request $request, Response $response, $args){
+        $validation = Validator::validate($request, [
+            'email' => v::notEmpty(),
+            'password' => v::notEmpty(),
+        ]);
+
+        if (!empty($validation)){
+            return $response->withJson(["status" => "failed", "error" => $validation], 400);   
+        }
+
+
+        $input = $request->getParsedBody();
+        $customer = Customer::where('email', $input['email'])->first();
+		if ($customer && $input['password'] == $customer->password) {
+            return $response->withJson(["status" => "success", "data" => $customer], 200);
+        }
+        else{
+            return $response->withJson(["status" => "failed"], 403);
         }
     }
 
