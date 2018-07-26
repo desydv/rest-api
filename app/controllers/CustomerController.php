@@ -125,7 +125,7 @@ final class CustomerController{
         $input = $request->getParsedBody();
         $customer = Customer::where('email', $input['email'])->first();
 		if ($customer && $input['password'] == $customer->password) {
-            return $response->withJson(["status" => "success"], 200);
+            return $response->withJson(["status" => "success", "data" => $customer], 200);
         }
         else{
             return $response->withJson(["status" => "failed"], 403);
