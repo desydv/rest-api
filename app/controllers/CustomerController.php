@@ -48,7 +48,12 @@ final class CustomerController{
     }
 
     public function updateCustomer(Request $request, Response $response, $args){
-        $validation = $this->customerValidation($request);
+        $validation = Validator::validate($request, [
+            'email' => v::notEmpty(),
+            'name' => v::notEmpty(),
+            'password' => v::notEmpty(),
+            'phone' => v::notEmpty(),
+        ]);
 
         if (!empty($validation)){
             return $response->withJson(["status" => "failed", "error" => $validation], 400);   
