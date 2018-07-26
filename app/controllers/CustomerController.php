@@ -111,4 +111,25 @@ final class CustomerController{
         }
     }
 
+    public function login(Request $request, Response $response, $args){
+        $validation = Validator::validate($request, [
+            'email' => v::notEmpty(),
+            'password' => v::notEmpty(),
+        ]);
+
+        if (!empty($validation)){
+            return $response->withJson(["status" => "failed", "error" => $validation], 400);   
+        }
+
+
+        $input = $request->getParsedBody();
+        $customer = Customer::where('email', $input['email'])->first();
+		if ($customer && $input['password'] == $customer->password) {
+            return $response->withJson(["status" => "success"], 200);
+        }
+        else{
+            return $response->withJson(["status" => "failed"], 403);
+        }
+    }
+
 }

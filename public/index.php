@@ -19,6 +19,8 @@ $app->get('/', ApiController::class.':hello');
 
 $app->get('/customers', CustomerController::class.':getCustomers');
 
+$app->post('/login', CustomerController::class.':login');
+
 $app->get('/customer/[{id}]', CustomerController::class.':getSpecificCustomer');
 
 $app->post('/customer', CustomerController::class.':createCustomer');
